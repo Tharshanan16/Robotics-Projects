@@ -35,6 +35,9 @@ const int STBY=2;
 
 int MotorSpeed =180;
 
+
+          //                           Main Function
+
 void setup() {
 
  // Ultra sonic 
@@ -68,6 +71,7 @@ void setup() {
 }
 
 void loop() {
+
   // Look stright
   myServo.write(90);
   delay(200);
@@ -92,16 +96,58 @@ void loop() {
   else {
     stopMotors();
     delay(300);
+  
+    //Check left
+    
+    myServo.write(180);
+    delay(500);
+
+    int leftDistance = getDistance();
+
+    Serial.print("Left: ");
+    Serial.print(leftDistance);
+    Serial.println(" cm");
+
+    //Check Right
+
+    myServo.write(0);
+    delay(500);
+
+    int rightDistance = getDistance();
+
+    Serial.print("Right : ");
+    Serial.print(rightDistance);
+    Serial.println(" cm");
+    
+    // return servo to center
+    myServo.write(90);
+    delay(300);
+
+    // Decide direction
+    if(leftDistance>rightDistance){
+      turnLeft();
+      delay(600);
+    }
+
+    else {
+      turnRight();
+      delay(600);
+    }
+
+    stopMotors();
+    delay(200);
+
   }
-  
-  
-
-  
 
 
 
 
+  //                              Other Functions
 
+
+  // Ultra sonic sensor distance function
+
+  int                             
 
 
 

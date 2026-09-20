@@ -33,7 +33,7 @@ const int STBY=2;
 
 //MotorSpeed values
 
-int MotorSpeed =180;
+int motorSpeed =180;
 
 
           //                           Main Function
@@ -77,7 +77,7 @@ void loop() {
   delay(200);
 
   //Measure Distance
-  distance =getDistance();
+  int distance =getDistance();
 
   Serial.print("Distance: ");
   Serial.print(distance);
@@ -139,6 +139,8 @@ void loop() {
 
   }
 
+}
+
 
 
 
@@ -147,7 +149,101 @@ void loop() {
 
   // Ultra sonic sensor distance function
 
-  int                             
+  int getDistance(){
+    
+    //Make sure trigger starts LOW
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+
+    // Send 10 microsecond pulse
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+
+    //Measure echo
+    int duration = pulseIn(echoPin, HIGH,30000);
+
+    //If no echo received
+    if(duration ==0){
+      return 400;
+    }
+
+    //calculate distance
+    int calculatedDistance = duration * 0.034 /2;
+    return calculatedDistance;
+  }                            
+
+
+  //Move Forward
+
+  void moveForward(){
+
+    //left side forward
+    digitalWrite(in1A,HIGH);
+    digitalWrite(in2A,LOW);
+
+    //right side forward
+    digitalWrite(in1B,HIGH);
+    digitalWrite(in2B,LOW);
+
+    //Motor speed
+    analogWrite(pwmA,motorSpeed);
+    analogWrite(pwmB,motorSpeed);
+  }
+
+  //Stop Motors
+  
+  void stopMotors(){
+
+    //Set Motorspeed to 0
+    analogWrite(pwmA,0);
+    analogWrite(pwmB,0);
+
+    // Stop left side
+    digitalWrite(in1A,LOW);
+    digitalWrite(in2A,LOW);
+
+    // stop right side
+    digitalWrite(in1B,LOW);
+    digitalWrite(in2B,LOW);
+
+  }
+
+
+  //Turn left
+
+   void turnLeft(){
+
+    //left side backward
+    digitalWrite(in1A,LOW);
+    digitalWrite(in2A,HIGH);
+
+    //right side forward
+    digitalWrite(in1B,HIGH);
+    digitalWrite(in2B,LOW);
+
+    //Motor speed
+    analogWrite(pwmA,motorSpeed);
+    analogWrite(pwmB,motorSpeed);
+  }
+
+
+  //Turn Right
+
+   void turnRight(){
+
+    //left side forward
+    digitalWrite(in1A,HIGH);
+    digitalWrite(in2A,LOW);
+
+    //right side forward
+    digitalWrite(in1B,LOW);
+    digitalWrite(in2B,HIGH);
+
+    //Motor speed
+    analogWrite(pwmA,motorSpeed);
+    analogWrite(pwmB,motorSpeed);
+  }
 
 
 
@@ -172,6 +268,3 @@ void loop() {
 
 
 
-
-
-}
